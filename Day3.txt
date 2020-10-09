@@ -1,0 +1,263 @@
+QA
+================================
+CMD vs Entrypoint
+
+- demo
+	on hub.docker.com
+- Pvt repo
+- Example of dockerfile
+
+Using a docker file - how can we pass host machine folder directory dynamically so when docker file executes it reads contents from host machine
+--- ADD
+--- COPY
+
+
+Can we read a host machine env var using dockerfile?
+------------
+Any dockerfile sample we have which is making a Springboot app as a Containarized one? 
+How to run Springboot app?
+-------------
+OS -> JDK -> SB -> APP+DB
+
+
+ROOTFS -> JDK -> SB -> APP+DB
+=================================
+	Image
+
+docker run Springboot app 
+
+------------
+Could you please explain the Docker and its container management with any realtime examples ? like you did with bicycle ... please provide any realtime examples of working of Docker with containers. 
+==========================================================
+Why container?
+	TO Run APP?
+		but with 
+			Cheaper
+			Faster
+
+https://www.devopsschool.com/blog/devopsschool-github-referenece/
+
+How to work with Pvt repo?
+=======================================
+docker pull	
+docker push
+docker login
+docker logout
+		Registry
+docker info
+	registry: https://index.docker.com/
+	
+Method 1 - You do not want to change default registry
+Sc1 - docker pull jenkins
+	docker pull https://index.docker.com/jenkins
+Sc2 - artifactory - http://4.5.6.7:8080/verx34
+	docker pull http://4.5.6.7:8080/verx34
+	docker push http://4.5.6.7:8080/verx34
+	docker login http://4.5.6.7:8080/verx34
+
+Method 2 - You do not want to change default registry
+https://stackoverflow.com/questions/33054369/how-to-change-the-default-docker-registry-from-docker-io-to-my-private-registry
+
+
+Working with Private repo
+https://www.devopsschool.com/blog/?s=docker+artifactory
+
+================================
+CMD vs Entrypoint
+
+
+How to set PID1?
+How to customize or change PID1??
+==============================
+CMD VS ENTRYPOINT
+================================
+Initially 
+	Docker intro CMD to set PID1.
+	CMD can be replaced.
+		UBUNTU
+
+	Entrpoint
+	- Entrpoint CAN NOT replaced.
+		jenkins
+
+===================================
+Assignment
+=====================
+What about if i keep 2 CMD
+What about if i keep 2 Entrpoint 
+What about if i keep 1 CMD and 1 Entrpoint 
+
+https://www.devopsschool.com/tutorial/docker/dockerfile/dockerfile-example-sample-lab.html
+
+===============================================================================
+===============================================================================
+What is Docker Compose?
+==============================
+	is a Tool
+	To Automate Workflow with docker
+	Used by Image Dev.
+
+docker-compose
+		read one file (docker-compose.yaml)
+		contains
+			SERVICE(S)
+				SERVICE 1 (WEB)
+					build - argument(dockerfile)
+					image - argument(imagename)
+					volume - argument(vol name)
+					network - argument
+					port - argument
+					env - argument
+	
+				SERVICE 2 (APP)
+
+				SERVICE 3 (DB)
+		===================================================
+		docker-compose up
+		docker-compose down
+		docker-compose up
+		docker-compose start 
+		docker-compose stop 
+		docker-compose rm
+		docker-compose logs
+		docker-compose ps
+
+
+ 622  sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  623  sudo chmod +x /usr/local/bin/docker-compose
+  624  sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+  625  docker-compose --version
+  626  clear
+  627  ls
+  628  vi docker-compose.yaml
+  629  docker-compose ps
+  630  docker-compose -h
+  631  clear
+  632  docker-compose up -d
+  633  docker-compose ps
+  634  docker-compose logs
+  635  docker-compose stop
+  636  docker-compose ps
+  637  docker-compose start
+  638  docker-compose ps
+
+-------------------docker-compose.yaml-------------------
+version: '2'
+services:
+  wordpress:
+    image: wordpress:latest # https://hub.docker.com/_/wordpress/
+    ports:
+      - 80:80 # change ip if required
+    volumes:
+      - ./wp-app:/var/www/html # Full wordpress project
+      #- ./plugin-name/trunk/:/var/www/html/wp-content/plugins/plugin-name # Plugin development
+      #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: password
+    depends_on:
+      - db
+    networks:
+      - wordpress-network
+  db:
+    image: mysql:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
+    ports:
+      - 3306:3306 # change ip if required
+    volumes:
+      - ./wp-data:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - wordpress-network
+networks:
+  wordpress-network:
+      driver: bridge
+====================================================================================
+Master
+	API Server -> POD -> Container -> Docker Image ->Google Registry
+	Etcd	 -> POD -> Container -> Docker Image ->Google Registry
+	Controller Mgmr  -> POD -> Container -> Docker Image ->Google Registry
+	Schedular  -> POD -> Container -> Docker Image ->Google Registry
+	Proxy -> POD -> Container -> Docker Image ->Google Registry
+
+	Kubelet 
+	Docker              ----->
+	Kubeadm
+	kubectl
+Worker
+	Kubelet -> POD -> Container -> Docker Image -> Registry
+	Proxy -> POD -> Container -> Docker Image ->Google Registry
+	
+	Docker              ----->
+	Kubeadm
+	kubectl
+
+Workstation
+	Kubectl
+
+===========================================
+How to setup k8s Clustor?
+- One Node - Learning - Using Minikube
+- Multiple Node - 
+		QA
+		PROD
+=============================
+	PRIVATE
+		Manual
+			kubeadm
+		Automated
+			kops
+
+	PUBLIC
+		Manual
+			Kops
+			kubeadm
+		Hosted
+			EKS
+			GKE
+			AKS
+============================================
+How to setup k8s Clustor using kubeadm?
+
+============================================
+centos1 ==== WORKER
+centos2 ==== MASTER
+Steps
+https://www.devopsschool.com/blog/setting-up-kubernetes-clusters-using-kubeadm-manual-way-in-rhel-7-centos7/
+
+15.207.249.46
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 172.31.2.36:6443 --token a6xyt3.uy3o3jazrf94mohc \
+    --discovery-token-ca-cert-hash sha256:44ac551115443955456e97dd94f34a4fc8b747e6238da0bfd6d5aa716926c4f8
+
+
+=================================================================
+=================================================================
+
+
+
+https://www.devopsschool.com/blog/how-to-delete-remove-clean-existing-corrupted-or-old-kubeadm-kubernetes-clusters-setup/
+
+https://www.devopsschool.com/blog/kubernetes-error-kubeadm-related-errors-and-solutions/
+
+
+
+
+
+
+

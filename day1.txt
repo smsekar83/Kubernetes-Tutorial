@@ -1,0 +1,380 @@
+===================
+Demo - By Me.
+Lab Env - 
+==============
+Start - 9:30 AM - 6:30 PM
+========================
+2 BREAK - 15 mins - 
+		11:AM
+		4: PM
+1 Lunch - 1 - 2PM
+=========================
+Rajesh Kumar - 8105843520
+=========================
+Docker - 2 Days
+Kubernetes - 3 Days
+=========================
+Pre Test - Today
+		1 Docker
+		- Docker Essential Quiz - 1
+		https://www.devopsschool.com/lms/mod/quiz/view.php?id=250
+		1 Kubernetes 
+		- Kubernetes Essential Quiz - 1
+		https://www.devopsschool.com/lms/mod/quiz/view.php?id=319
+		= 30 
+Post test - 5th 4PM IST
+		1 Docker
+		1 Kubernetes 
+============================================
+============================================
+What is Docker?
+----------------------------
+	Container mgmt tool
+	Platform for Container
+	Release
+		CE - Community Edi - Free and Open Source
+		EE - Enterprise - Paid
+	Golang
+	Written by Soloman Hykes
+	19.X
+	
+
+	tool
+		Saving cost
+		Saving time
+		Imp Eff*
+
+	What is Container?
+	-----------------------------
+	Container is a initialization of 
+				1 USER SPACE NS
+				with their own
+					1 NET NS
+					1 PID NS
+					1 MNT NS
+	Container is light weight, Independent app RUN TIME ENV.
+
+How can you RUN ANY app?
+or
+What are the components (IN OS) we need to have to run ANY APP aka Any software??
+==================================================================	
+PHYSICAL Server (Internet) --> Virutal Server --> Container
+==============================================
+OS				OS
+----------------------------------------------
+Kernal
+	Namespace
+		PID NS			1
+		MNT NS			1
+		NET NS			1
+		USER NS 		N number of time
+	Cgroups
+		allocating CPU and RAM to PID.
+	Security
+		Capabilties	
+				Root or non-root access for USER
+
+==================PROBLEM============================
+How can we RUN more apps with less HARDWARE? - Saving cost for running app in DATA Center.
+How can we deploy and rollback faster? - Save time - 
+How can we REDUCE a waste of running app in Data center?
+
+=============================
+PC = 	Personal 	Computing
+	For Human	CPU+RAM+Storage
+
+
+	OS was designed for PC - For human - 
+	NOT FOR RUNNING APPS in Datacenter
+
+=================================
+Now we running APPS Not in PC but DATA CENTER.
+
+OS - WE WOULD NOT ALLOW THIS.
+====================================================
+What is MNT?
+==================
+SYSTEM FILESYSTEM(S)
+	BOOT FS AKA KERNAL FILESYSTEM - CAN NOT SEE DURING RUN TIME.
+	ROOT FS AKA C drive 
+	USER FS
+	APP FS
+====================================================
+Qs
+At KERNEL level PID is only 1. At docker level if it creates it's own PID p/user - whats the gaurantee that a PID created under user-a doesnt clash with another PID created under user-b?
+
+Other tool - Container Interface
+==========================
+https://www.devopsschool.com/blog/list-of-top-container-runtime-interface-projects/
+
+Architecture of Docker?
+=================================
+Human  --> Docker Client --REST--> Docker Deamon --> ContainerD -> Kernal
+	  =======================================	
+			Docker Engine 
+			Container Gets created.
+
+
+Docker Components?
+=================================
+Docker Engine
+Docker Images
+	is a collecitons of filesystem(s) which represent following..
+		ROOT FS AKA C drive 
+		USER FS
+		APP FS
+	Whatever you have in image - You have in Contaier
+	One Image - You can create multiple container
+
+Docker Registry
+	A Place where you can find REPOSITORY
+		REPOSITORY has filesystem(s) aka Images.
+	PUB
+		hub.docker.com
+		google registry
+
+	PVT
+		Artifactory
+		Nexus
+		ECR
+
+Docker Container
+	You run docker image
+			ONE USER NS get created,
+			ONE MOUNT get attached from the Image filesystems
+			ONE PID NS get attached to USER
+			ONE NET NS get attached to USER
+
+Docker Workflow Aka How Docker works!!!
+=================================
+
+HUman -> Docker Client --> Docker Deamon
+			CHECK - IF IMAGE EXIST in LOCAL Registry
+					Create a container 
+				IF IMAGE DO NOT EXIST in LOCAL Registry	
+					Download Image from Registrty to Local
+					Create a container
+				
+
+VMs LifeCycle
+=================================
+Create -> Start -> Stop -> Start -> Restart -> Pause -> Unpause -> kill -> Remove
+
+Container LifeCycle
+=================================
+Create -> Start -> Stop -> Start -> Restart -> Pause -> Unpause -> kill -> Remove
+
+
+How to install Docker Engine?
+=====================================
+13.232.219.139
+centos
+https://www.devopsschool.com/tutorial/docker/install-config/docker-install-commuityedition-centos-rhel.html
+- DOCKER NEED ROOT or USER has to be part of Group called "Docker"
+
+Lab Infra
+--------------------
+3 Vms
+1. centos 1 - Docker
+2. centos 2
+3. Windows
+
+
+
+What APP you want to run in Container?
+========================================
+Jenkins
+	- Java based
+	- WEB - 8080
+	- Agent - 50000
+
+OS 				-> JDK -> Jenkins
+==================================
+B FS -> R FS -> A FS
+	==============
+		Image
+	DEBIAN + JDK + JENKINS
+
+ 11  docker -v
+   12  docker help
+   13  clear
+   14  docker help run
+   15  clear
+   16  docker info
+   17  clear
+   18  docker version
+   19  clear
+   20  docker images
+   21  history
+   22  clear
+   23  docker imagfes
+   24  docker imagesd
+   25  docker images
+   26  clear
+   27  docker images
+   28  docker pull jenkins
+   29  docker images
+   30  clerar
+   31  clear
+   32  clerar
+   33  docker images
+   34  docker create jenkins
+   35  docker ps
+   36  docker ps -a
+   37  docker start e1e1d3371703
+   38  docker ps
+   39  clear
+   40  docker create jenkins
+   41  docker ps -a
+   42  docker create jenkins
+   43  docker ps -a
+   44  docker start 254891976add
+   45  clear
+   46  docker ps -a
+   47  docker stop 254891976add
+   48  docker ps -a
+   49  docker stop e1e1d3371703
+   50  docker start 254891976add b3bcb040243c e1e1d3371703
+   51  docker ps
+   52  docker ps
+   53  clear
+   54  docker ps
+   55  docker restart 254891976add b3bcb040243c
+   56  docker ps
+   57  clear
+   58  docker ps
+   59  docker pause 254891976add
+   60  docker ps
+   61  docker unpause 254891976add
+   62  docker ps
+   63  clear
+   64  docker ps
+   65  docker kill 254891976add
+   66  docker ps
+   67  docker ps -a
+   68  clear
+   69  docker ps -a
+   70  docker rm 254891976add
+   71  docker ps
+   72  docker ps -a
+   73  history
+
+Assignment
+=============================
+Pause vs Unpause
+Stop Vs Kill
+======================================
+Important of PID1?
+==========================================
+PHYSICAL Server		Virtual Server		Container 
+is running		is running		is running
+as long as		as long as		as long as
+PID 1 is running	PID 1 is running	PID 1 is running	
+---------------------------------------------------------------
+PID 1 is systemd	PID 1 is systemd	PID 1 can be any executables
+
+
+PROOF
+-=========================
+ 81  ls
+   82  ps -eaf
+   83  cleart
+   84  clear
+   85  docker ps
+   86  cl;ear
+   87  clear
+   88  ps -eaf
+   89  clear
+   90  docker ps
+   91  docker exec b3bcb040243c ps -eaf
+   92  docker exec e1e1d3371703 ps -eaf
+   93  docker ps
+   94  docker inspect b3bcb040243c
+   95  clear
+   96  docker ps
+   97  docker exec b3bcb040243c df -kh
+   98  docker exec e1e1d3371703 df -kh
+   99  clear
+  100  docker ps
+  101  docker exec b3bcb040243c ls /var/jenkins_home
+  102  clear
+  103  docker exec b3bcb040243c touch /var/jenkins_home/devopsschool.txt
+  104  docker exec b3bcb040243c ls /var/jenkins_home
+  105  docker exec e1e1d3371703 ls /var/jenkins_home
+
+
+
+
+
+
+
+How to access Container?
+=================================
+How can i get inside a container?
+
+exec
+	This would execute an executables inside a container,.
+	with exec & -it & /bin/bash - You can go inside a container.
+  111  docker ps
+  112  docker exec b3bcb040243c ls
+  113  docker exec b3bcb040243c ps
+  114  clear
+  115  docker exec b3bcb040243c ddddd
+  116  docker ps
+  117  docker exec -it b3bcb040243c /bin/bash
+  118  docker exec -it b3bcb040243c /bin/bash
+
+
+attach
+	IT get attached to a session of PID1
+
+'
+How to come out of the container without Exiting PID1?
+Control + P + Q
+
+
+How can i access app running from outside?
+
+docker run -d -p 8080:8080 jenkins
+
+ 119  clear
+  120  history
+  121  clear
+  122  ps
+  123  clear
+  124  docker ps
+  125  docker exec b3bcb040243c ps -eaf
+  126  docker attach b3bcb040243c
+  127  docker ps -a
+  128  clear
+  129  clear
+  130  docker run ubuntu
+  131  docker ps
+  132  docker ps -a
+  133  docker run -itd ubuntu
+  134  docker ps -a
+  135  docker exec 34a298cc2bf1 ps -eaf
+  136  docker attach 34a298cc2bf1
+  137  docker ps -a
+  138  clear
+  139  docker ps
+  140  docker ps -a
+  141  docker start 34a298cc2bf1
+  142  docker ps
+  143  docker attach 34a298cc2bf1
+  144  docker ps
+  145  clear
+  146  docker ps
+  147  docker inspect 34a298cc2bf1
+  148  clear
+  149  docker ps
+  150  docker inspect e1e1d3371703+
+  151  docker inspect e1e1d3371703
+  152  ping 172.17.0.4+
+  153  ping 172.17.0.4
+  154  curl http://172.17.0.4:8080
+  155  clear
+  156  docker run -d -p 8080:8080 jenkins
+  157  docker ps
+  158  docker run -d -p 8090:8080 jenkins
+

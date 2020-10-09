@@ -1,0 +1,412 @@
+Service Types
+	ClustorIP
+		- This service would get IP address of POD network.
+		- This is default service
+		
+	NodePort
+		- This service Can be accessible at Port of any node of the clustor.
+		- The ClustorIP service which is Exposeed at each Node - call NodePort Service.
+		--------------------
+		ClustorIP Service Get created.
+		& ClustorIP Service get exposed at Port of each nOde.
+
+	Loadbalancer
+		- This service Can be accessible outside of clustor.
+
+		ClustorIP Service Get created.
+		& ClustorIP Service get exposed at Port of each nOde.
+		
+		& One External LoadBalancer gets created 
+		& Each node of the clustor get loadbalanced by E LB.
+
+13.232.40.16
+===================================
+
+
+
+
+
+
+
+Assignment
+============================
+[centos@ip-172-31-2-36 rajeshkumar]$ kubectl get svc
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   42h
+[centos@ip-172-31-2-36 rajeshkumar]$
+
+kubectl create service clusterip my-cs --tcp=5678:80 -n=rajesh
+
+
+
+svc				pod1					pod2
+
+10.106.246.21:80		10.106.246.22:80		10.106.246.23:80
+10.106.246.21:5678		10.106.246.22:80		10.106.246.23:80
+10.106.246.21:5678		10.106.246.22:8080		10.106.246.23:8080
+
+
+
+ 1009  clear
+ 1010  kubectl get pods -n=rajesh
+ 1011  ckear
+ 1012  clear
+ 1013  kubectl get pods -n=rajesh
+ 1014  clear
+ 1015  kubectl get pods -n=rajesh
+ 1016  kubectl get svc
+ 1017  kubectl get svc -n=rajesh
+ 1018  ls
+ 1019  kubectl apply -f pod.yaml -n=rajesh
+ 1020  kubectl get pods -n=rajesh
+ 1021  kubectl get pods -n=rajesh -o wide --show-labels
+ 1022  clear
+ 1023  kubectl get pods -n=rajesh -o wide --show-labels
+ 1024  more pod.yaml
+ 1025  vi pod.yaml
+ 1026  kubectl apply -f pod.yaml -n=rajesh
+ 1027  kubectl get pods -n=rajesh -o wide --show-labels
+ 1028  clear
+ 1029  kubectl get pods -n=rajesh -o wide --show-labels
+ 1030  kubectl
+ 1031  clear
+ 1032  ls
+ 1033  kubectl get pods -n=rajesh -o wide --show-labels
+ 1034  kubectl create -h
+ 1035  clear
+ 1036  kubectl create service -h
+ 1037  kubectl create service clusterip -h
+ 1038  clear
+ 1039  kubectl create service clusterip my-cs --tcp=5678:80 -n=rajesh
+ 1040  kubectl get svc -n=rajesh
+ 1041  kubectl describe svc my-cs -n=rajesh
+ 1042  clear
+ 1043  kubectl get svc -n=rajesh --show-labels
+ 1044  kubectl get pods -n=rajesh --show-labels
+ 1045  kubectl describe svc my-cs -n=rajesh
+ 1046  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1047  clear
+ 1048  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1049  vi pod.yaml
+ 1050  kubectl apply -f pod.yaml -n=rajesh
+ 1051  clear
+ 1052  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1053  kubectl edit svc my-cs -n=rajesh
+ 1054  kubectl edit pod hello-pod -n=rajesh
+ 1055  clear
+ 1056  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1057  kubectl edit pod hello-pod -n=rajesh
+ 1058  kubectl edit svc my-cs -n=rajesh
+ 1059  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1060  clear
+ 1061  kubectl edit svc my-cs -n=rajesh
+ 1062  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1063  kubectl edit pod hello-pod -n=rajesh
+ 1064  clear
+ 1065  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1066  vi pod.yaml
+ 1067  kubectl create -f pod.yaml -n=rajesh
+ 1068  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1069  vi pod.yaml
+ 1070  kubectl apply -f pod.yaml =n=rajesh
+ 1071  clear
+ 1072  kubectl apply -f pod.yaml -n=rajesh
+ 1073  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1074  curl http://10.106.246.21
+ 1075  clear
+ 1076  curl http://10.106.246.21
+ 1077  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1078  curl http://10.106.246.21
+ 1079  curl http://10.106.246.21:5678
+ 1080  clear
+ 1081  ls
+ 1082  clear
+ 1083  kubectl get pods -n=rajesh
+ 1084  kubectl edit pod hello-pod -n=rajesh
+ 1085  kubectl edit pod hello-pod1 -n=rajesh
+ 1086  clear
+ 1087  kubectl get pods -n=rajesh
+ 1088  kubectl get pods -n=rajesh -o wide
+ 1089  curl http://10.44.0.1
+ 1090  curl http://10.44.0.2
+ 1091  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1092  clear
+ 1093  curl http://10.106.246.21:5678
+ 1094  watch curl http://10.106.246.21:5678
+ 1095  history
+
+=============================================================
+=============================================================
+
+
+NodePort
+		- This service Can be accessible at Port of any node of the clustor.
+		- The ClustorIP service which is Exposeed at each Node - call NodePort Service.
+		--------------------
+		ClustorIP Service Get created.
+		& ClustorIP Service get exposed at Port of each nOde.
+
+	Loadbalancer
+		- This service Can be accessible outside of clustor.
+
+		ClustorIP Service Get created.
+		& ClustorIP Service get exposed at Port of each nOde.
+		
+		& One External LoadBalancer gets created 
+		& Each node of the clustor get loadbalanced by E LB.
+
+
+
+kubectl create service nodeport my-ns --tcp=5678:80
+
+
+
+ 1110  clear
+ 1111  kubectl create service nodeport my-ns --tcp=5678:80 -n=rajesh
+ 1112  kubectl get svc -n=rajesh
+ 1113  kubectl describe svc my-ns -n=rajesh'
+ 1114  kubectl describe svc my-ns -n=rajesh
+ 1115  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1116  clear
+ 1117  kubectl get svc -n=rajesh
+ 1118  kubectl edit svc my-ns -n=rajesh
+ 1119  clear
+ 1120  kubectl describe svc my-ns -n=rajesh
+ 1121  kubectl edit svc my-ns -n=rajesh
+ 1122  clear
+ 1123  kubectl describe svc my-ns -n=rajesh
+ 1124  kubectl get svc -n=rajesh --show-labels;kubectl get pods -n=rajesh --show-labels;kubectl describe svc my-cs -n=rajesh
+ 1125  kubectl edit svc my-ns -n=rajesh
+ 1126  clear
+ 1127  kubectl describe svc my-ns -n=rajesh
+ 1128  kubectl get svc -n=rajesh
+==========================================================================
+LoadBalancer
+
+kubectl create service loadbalancer my-lbs --tcp=5678:80 -n=rajesh
+
+
+veri-1282943153.ap-south-1.elb.amazonaws.com
+
+======================================================================
+https://www.devopsschool.com/blog/persistentvolume-persistentvolumeclaim-volumes-using-hostpath/
+
+====== DONE by Admin ====
+===== Clustor =======
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: hostpath
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/devopsschool"
+
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: hostpath1
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/tmp/devopsschool"
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvchostpath
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvchostpath1
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: task-pv-pod
+spec:
+  containers:
+    - name: task-pv-container
+      image: scmgalaxy/nginx-devopsschoolv1
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: pvchostpath
+
+
+1162  kubectl create -f pv.yaml
+ 1163  kubectl get pv
+ 1164  kubectl get pvc
+ 1165  kubectl get pvc -n=rajesh
+ 1166  clear
+ 1167  ls
+ 1168  vi pvc.yaml
+ 1169  kubectl create -f pvc.yaml -n=rajesh
+ 1170  kubectl get pvc -n=rajesh
+ 1171  kubectl get pv
+ 1172  vi pv1.yaml
+ 1173  kubectl create -f pv1.yaml
+ 1174  kubectl get pvc -n=rajesh
+ 1175  wacth kubectl get pvc -n=rajesh
+ 1176  watch kubectl get pvc -n=rajesh
+ 1177  kubectl get pvc -n=rajesh
+ 1178  kubectl get pv
+ 1179  clear
+ 1180  kubectl get pv
+ 1181  kubectl get pvc
+ 1182  kubectl get pvc -n=rajesh
+ 1183  clear
+ 1184  vi pvc1.yaml
+ 1185  kubectl create -f pvc1.yaml -n=rajesh
+ 1186  kubectl get pvc -n=rajesh
+ 1187  kubectl get pv
+ 1188  clear
+ 1189  ls
+ 1190  vi pod1.yaml
+ 1191  kubectl create -f pod1.yaml -n=rajesh
+ 1192  kubectl get pod -o wide -n=rajesh
+ 1193  curl http://10.44.0.6
+ 1194  clear
+ 1195  ls
+ 1196  kubectl get pods -n=rajesh
+ 1197  kubectl delete pod task-pv-pod -n=rajesh
+ 1198  kubectl create -f pod1.yaml -n=rajesh
+ 1199  curl http://10.44.0.6
+
+https://www.devopsschool.com/blog/setup-nfs-server-and-use-inside-a-kubernetes-pods-in-rhel-centos7/
+
+https://www.devopsschool.com/blog/kubernetes-persistentvolume-and-persistentvolumeclaim-using-nfs-volume-types/
+=================================================================
+- RBAC
+- Auto Scaling
+- Multiple Master
+- INgress
+- Expose demo
+- 
+====================================
+Authentication  - How to get Login into k8s
+https://kubernetes.io/docs/reference/access-authn-authz/authentication/
+	- certification
+
+Authorization - What you are allowed to do?
+https://kubernetes.io/docs/reference/access-authn-authz/authorization/
+	- RBAC
+	- Role based Access Control
+
+	serviceaccounts
+		roles		using rolebindings
+		clusterroles 	using clusterrolebindings
+	Normal(Manual)
+		roles		using rolebindings
+		clusterroles	using clusterrolebindings
+		
+============================================
+openssl x509 -req -in employee.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out employee.crt -days 500
+
+
+======USER At LAPTOP==================
+kubectl create namespace office
+
+openssl genrsa -out employee.key 2048
+
+openssl req -new -key employee.key -out employee.csr -subj "/CN=employee/O=bitnami"
+
+======ADMIN AT MASTER using root==================
+openssl x509 -req -in employee.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out /home/ec2-user/tecnotree/employee.crt -days 500
+
+======USER At LAPTOP==================
+kubectl config set-credentials employee --client-certificate=/home/ec2-user/tecnotree/employee.crt  --client-key=/home/ec2-user/tecnotree/employee.key
+
+kubectl config set-context employee-context --cluster=kubernetes --namespace=office --user=employee
+
+kubectl --context=employee-context get pods
+
+https://github.com/devopsschool-training-notes/Kubernetes-Tecnotree-Nov-2019/blob/master/SUPERNOTES.TXT
+=======================================================================
+
+
+https://kubernetes.io/docs/tasks/administer-cluster/highly-available-master/
+
+
+INgress
+=====================================
+
+
+devopsschool.com/account ----> serviceA
+devopsschool.com/profile ---> serviceB
+
+
+account.devopsschool.com ----> serviceA
+profile.devopsschool.com ---> serviceB
+
+
+https://www.devopsschool.com/blog/kubernetes-ingress-tutorials-with-examples-and-lab-using-loadbalancer/
+https://www.devopsschool.com/blog/kubernetes-ingress-tutorials-with-examples-and-lab-using-nodeport/
+==============================
+What is minikube
+	ONE NODE Clustor
+	- Vm
+		Master
+		Worker
+	-----------------------
+	VirtualBox
+	Or
+	HYperBox
+
+Step 1- Install VB
+Step 2 - Downloand minikube.exe
+Step 3 - minikube start
+https://www.devopsschool.com/videos/show/minikube?type=video
+
+https://www.devopsschool.com/tutorial/kubernetes/labs/
+
+https://www.devopsschool.com/videos/show/cka?type=video
+================================
+rajesh@devopsschool.com
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,429 @@
+Commands
+===================
+https://www.devopsschool.com/tutorial/docker/commands/index.html
+
+run
+=====================================
+pull -> create -> start -> Attached to a container
+				(PID 1)
+run -d
+=====================================
+pull -> create -> start -> DO NOT Attached to a container
+				(PID 1)
+
+ 175  docker run ubuntu
+  176  docker ps
+  177  docker ps -a
+  178  docker run ubuntu df -kh
+  179  docker ps -a
+  180  clear
+  181  docker run jenkins
+  182  docker ps -a
+  183  history
+  184  clear
+  185  docker run -d jenkins
+  186  docker ps
+  187  docker run -d ubuntu
+  188  docker ps -a
+  189  clear
+  190  docker run -it -d ubuntu
+  191  docker ps
+
+cp
+======================
+ 196  touch devopsschool.txt
+  197  ls
+  198  docker cp devopsschool.txt a86b0441a3dc:/opt
+  199  docker exec a86b0441a3dc ls /opt
+  200  ls
+  201  rm devopsschool.txt
+  202  ls
+  203  clear
+  204  ls
+  205  docker cp a86b0441a3dc:/opt/devopsschool.txt .
+
+diff
+	================
+	files 
+		ADDED
+		CHANGED
+		DELETED 
+			after a container got created.
+
+ 167  docker diff a86b0441a3dc
+
+port
+=================
+exposed port
+=================
+
+164  docker images
+  165  docker rename  40f410c94f20 raj1
+  166  docker ps
+  167  clear
+  168  docker run -itd --name web2 ubuntu
+  169  docker ps
+
+Assignment
+==========================
+update	Update configuration of one or more containers
+wait	Block until one or more containers stop, then print their exit codes
+
+===================
+docker run --rm -itd ubuntu
+===================
+docker help run
+
+15.206.68.21
+=======================================================
+
+ 214  clear
+  215  docker ps
+  216  docker wait a183860aa4c4
+  217  docker wait a183860aa4c4
+  218  clear
+  219  docker events
+  220  history
+
+
+ 211  docker ps
+  212  docker attach a86b0441a3dc
+  213  docker stop a183860aa4c4
+  214  docker start a183860aa4c4
+  215  docker kill a183860aa4c4
+  216  clear
+  217  docker ps
+  218  docker logs a86b0441a3dc
+  219  docker logs
+  220  docker ps
+  221  docker logs 40f410c94f20
+  222  clear
+  223  docker ps
+  224  docker stats
+  225  docker stats a86b0441a3dc
+  226  docker ps
+  227  docker exec 40f410c94f20 ps -eaf
+  228  ps -eaf | grep jenkins.war
+  229  clear
+  230  docker ps
+  231  docker top 40f410c94f20
+  232  ps -eaf
+  233  clear
+  234  docker top 40f410c94f20
+  235  ps -eaf | grep jenkins.sh
+  236  clear
+  237  docker run -itd ubuntu
+  238  docker run -d jenkins'
+  239  docker run -d jenkins
+
+=================================================
+Docker Volume
+====================================================
+- Containers are EMPheral
+
+Goal? 
+How to make data persistance beyond a containers lifecycle.
+
+Solution?
+=============================
+- Docker Volume
+https://www.devopsschool.com/blog/understand-docker-volume-from-beginner-to-deep-dive-level/
+
+- Volume - /var/lib/docker/volumes
+
+ 298  docker volume
+  299  docker volume ls
+  300  ls
+  301  docker volume ls
+  302  docker volume prune
+  303  clear
+  304  ls
+  305  docker volume ls
+  306  docker volume create dev
+  307  docker volume ls
+  308  ls
+  309  docker run -itd -v dev:/opt/raju ubuntu
+  310  docker ps
+  311  docker exec 820faf4a9a7a df -kh
+  312  clear
+  313  docker exec 820faf4a9a7a touch /opt/raju/ramukaka.txt
+  314  docker exec 820faf4a9a7a ls /opt/raju/
+  315  ls
+  316  cd dev/
+  317  ls
+  318  cd _data/
+  319  ls
+  320  touch raju.txt
+  321  docker exec 820faf4a9a7a ls /opt/raju/
+  322  docker stop 820faf4a9a7a
+  323  ls
+  324  docker rm 820faf4a9a7a
+  325  ls
+  326  docker run -itd -v dev:/opt/raju ubuntu
+  327  docker p
+  328  docker ps
+  329  docker exec 99af84ae1f7f ls /opt/
+  330  docker exec 99af84ae1f7f ls /opt/raju
+332  history
+  333  clear
+  334  ls
+  335  docker volume ls
+  336  docker volume create qa1 qa2
+  337  docker volume create qa1
+  338  docker volume create qa2
+  339  docker run -itd -v qa1:one -v qa2:two ubuntu
+  340  docker run -itd -v qa1:/opt/one -v qa2:/opt/two ubuntu
+  341  docker ps
+  342  docker exec cea70c05b3f9 ls /opt
+  343  docker ps
+  344  docker stop cea70c05b3f9 99af84ae1f7f
+  345  docker volume ls
+  346  docker volume rm qa2 qa1
+  347  docker rm cea70c05b3f9 99af84ae1f7f
+  348  docker volume ls
+  349  docker rm cea70c05b3f9 99af84ae1f7f
+  350  docker volume rm qa2 qa1
+
+
+
+- mount - any place in HOST Machine
+  359  ls
+  360  pwd
+  361  docker run -itd -v /opt/bkp:/opt/ddd ubuntu
+  362  docker ps
+  365  docker exec 363957f9915a ls /opt/
+  366  docker exec 363957f9915a ls /opt/ddd
+  367  ls
+  368  touch sdfsf
+  369  docker exec 363957f9915a ls /opt/ddd
+  370  pwd
+
+
+- tempfs - host memory
+
+
+13.233.124.225
+
+
+================When you create a container from an Image
+	---- All Layers get merged into ONE Layer
+	---- READ & Write
+	----
+		diff - Get Copied here also  & if you stop - this delta get persisted
+		merged - You do here..  & if you stop - this get deleted.,
+
+
+ 412  docker images
+  413  docker rmi ubuntu jenkins
+  414  clear
+  415  docker images
+  416  docker info
+  417  cd /var/lib/docker/
+  418  ls
+  419  clear
+  420  ls -la
+  421  cd overlay2
+  422  clear
+  423  ls
+  424  du -sh .
+  425  docker pull ubuntu
+  426  ls
+  427  du -h --max-depth=1
+  428  cd ./75436088dafe58057c69498e75b068529413fbafadfa4f32502f3293e973f8d6
+  429  clear
+  430  l
+  431  s
+  432  ls
+  433  cd diff/
+  434  clear
+  435  ls
+  436  pwd
+  437  docker images
+  438  docker history ubuntu
+  439  clear
+  440  docker history ubuntu
+  441  ls /var/lib/docker/
+  442  clear
+  443  lsw
+  444  docker images
+  445  docker inspect ubuntu
+  446  clear
+  447  ls
+  448  cd ../..
+  449  ls
+  450  clear
+  451  ls
+  452  docker images
+  453  docker ps
+  454  docker run -itd ubuntu
+  455  ls
+  456  du -sh 1cbf8065989a3893727145364f4e7b8e9779d6fd108bb74b4545c8cb5554d1b1
+  457  du -sh 1cbf8065989a3893727145364f4e7b8e9779d6fd108bb74b4545c8cb5554d1b1-init
+  458  clear
+  459  ls
+  460  docker run -itd ubuntu
+  461  ls
+  462  clear
+  463  cd 1cbf8065989a3893727145364f4e7b8e9779d6fd108bb74b4545c8cb5554d1b1
+  464  ls
+  465  cd df -kh
+  466  df -kh
+  467  docker ps
+  468  docker exec 580ae0e3a08d touch /opt/devops.txt
+  469  clear
+  470  ls
+  471  cd ..
+  472  ls
+  473  find . -name devops.txt
+  474  docker ps
+  475  docker stop 580ae0e3a08d
+  476  find . -name devops.txt
+  477  ls
+  478  history
+==============================================
+==============================================
+How to create a Docker Image?
+1. Using Exisitng Container
+
+Requirement
+===================
+Base- Ubuntu
+- java
+- git
+- apache
+
+  501  ls
+  502  docker ps -a
+  503  docker run -itd ubuntu
+  504  docker ps
+  505  docker attach caf700f852b9
+  506  clear
+
+
+ 1  java
+    2  apt-get install openjdk-8-jre
+    3  apt-get update
+    4  clear
+    5  apt-get install openjdk-8-jre
+    6  clear
+    7  ls
+    8  java
+    9  clear
+   10  apt-get install git -y
+   11  git
+   12  apt-get install apache2
+   13  history
+
+
+  507  docker ps
+  508  docker exec caf700f852b9 java
+  509  clear
+  510  docker exec caf700f852b9 git
+  511  clear
+  512  docker exec caf700f852b9 which apache2
+
+
+ 513  history
+  514  clear
+  515  ls
+  516  docker ps
+  517  docker history ubuntu
+  518  docker commit -m
+  519  docker commit -m"ub-up-java-git-apache" -a "Rajesh kumar" caf700f852b9 ub-up-java-git-apache
+  520  docker images
+  521  docker history ub-up-java-git-apache
+  522  docker history ubuntu
+  523  cleaR
+  524  docker run -itd --name ramukaka ub-up-java-git-apache
+  525  docker ps
+  526  docker exec 854c0632a3fc git
+  527  history
+================================================
+How to share an image?
+=====================================
+1. Using Tar ball
+
+  533  clear
+  534  docker images
+  535  docker save -o ub-up-java-git-apache.tar ub-up-java-git-apache
+  536  ls
+  537  docker images
+  538  docker rmi ub-up-java-git-apache
+  539  docker images
+  540  docker rmi ubuntu
+  541  clear
+  542  ls
+  543  ls
+  544  docker load -i ub-up-java-git-apache.tar
+  545  docker images
+
+
+2. Using hub.docker.com
+Step 1 - Register at hub.docker.com
+Step 2 - Login to hub.docker.com
+Step 3 - Create a Empty repo
+Step 4 - Make sure Local Repo of Image and Remote Repo Name MUST match.
+Step 5 - docker login
+Step 6 - docker push reponame
+
+3. Using Private repo
+		ECR
+		Artifactory
+
+ 547  docker images
+  548  clear
+  549  docker images
+  550  docker tag ub-up-java-git-apache devopsschools/ub-up-java-git-apache
+  551  docker images
+  552  docker login
+  553  docker logout
+  554  docker login
+  555  clear
+  556  docker login
+  557  docker images
+  558  docker push devopsschools/ub-up-java-git-apache
+  559  clear
+  560  docker images
+  561  docker run -itd devopsschools/ub-up-java-git-apache
+  562  docker ps
+  563  touch devopsv2.txt
+  564  ls
+  565  docker cp devopsv2.txt anaconda-ks.cfg original-ks.cfg ef2f538eeb6a:/opt
+  566  docker cp devopsv2.txt anaconda-ks.cfg original-ks.cfg ef2f538eeb6a:/opt
+  567  clear
+  568  docker cp devopsv2.txt ef2f538eeb6a:/opt
+  569  docker exec ef2f538eeb6a los /opt
+  570  docker exec ef2f538eeb6a ls /opt
+  571  docker commit -m"v2" -a"rajesh" ef2f538eeb6a devopsschools/ub-up-java-git-apache:v2
+  572  docker images
+  573  docker push devopsschools/ub-up-java-git-apache:v2
+
+
+2. Using Dockerfile.
+=====================================
+Contains Instructions
+Each Instruction is ONE LAYER
+				DATA
+				META
+
+FROM ubuntu
+MAINTAINER Rajesh Kumar rajesh@devopsschool.com
+ARG pack=git
+RUN apt-get update 
+RUN apt-get install ${pack} -y
+ENV ROCK_HOME /var/rock
+COPY index.html /tmp
+
+docker build -t fff .
+
+FROM ubuntu
+MAINTAINER Rajesh Kumar rajesh@devopsschool.com
+RUN touch /opt/rajesh1.txt
+RUN touch /opt/rajesh2.txt
+RUN touch /opt/rajesh3.txt
+
+docker build -f myfile -t myfile .
+
+Assignment
+https://www.devopsschool.com/blog/dockerfile-lab-exercise-1/
+

@@ -1,0 +1,504 @@
+How a workstation connect to API server?
+===========================================
+
+Workstation
+	- kubectl
+		- ~/.kube/config
+
+What is content of config?
+====================================
+Clustor(s)
+	Clustor1 - http://api-server
+	Clustor2 - http://api-server
+	Clustor3 - http://api-server
+User(S)
+	User1 - Cert
+	User2 - Cert
+	User3 - Cert
+Context(S)
+	Context1 = Clustor1 + User2 
+	Context2 = Clustor2 + User1 
+
+curr-context
+	Context2
+
+=========================================
+
+[centos@ip-172-31-2-36 rajeshkumar]$ kubectl get pods
+No resources found in default namespace.
+[centos@ip-172-31-2-36 rajeshkumar]$
+
+
+What are resources and its version?
+What is namespace?
+
+
+[centos@ip-172-31-2-36 rajeshkumar]$ kubectl
+kubectl controls the Kubernetes cluster manager.
+
+ Find more information at: https://kubernetes.io/docs/reference/kubectl/overview/
+
+Basic Commands (Beginner):
+  create        Create a resource from a file or from stdin.
+  expose        Take a replication controller, service, deployment or pod and expose it as a new
+Kubernetes Service
+  run           Run a particular image on the cluster
+  set           Set specific features on objects
+
+Basic Commands (Intermediate):
+  explain       Documentation of resources
+  get           Display one or many resources
+  edit          Edit a resource on the server
+  delete        Delete resources by filenames, stdin, resources and names, or by resources and label
+selector
+
+Deploy Commands:
+  rollout       Manage the rollout of a resource
+  scale         Set a new size for a Deployment, ReplicaSet or Replication Controller
+  autoscale     Auto-scale a Deployment, ReplicaSet, or ReplicationController
+
+Cluster Management Commands:
+  certificate   Modify certificate resources.
+  cluster-info  Display cluster info
+  top           Display Resource (CPU/Memory/Storage) usage.
+  cordon        Mark node as unschedulable
+  uncordon      Mark node as schedulable
+  drain         Drain node in preparation for maintenance
+  taint         Update the taints on one or more nodes
+
+Troubleshooting and Debugging Commands:
+  describe      Show details of a specific resource or group of resources
+  logs          Print the logs for a container in a pod
+  attach        Attach to a running container
+  exec          Execute a command in a container
+  port-forward  Forward one or more local ports to a pod
+  proxy         Run a proxy to the Kubernetes API server
+  cp            Copy files and directories to and from containers.
+  auth          Inspect authorization
+
+Advanced Commands:
+  diff          Diff live version against would-be applied version
+  apply         Apply a configuration to a resource by filename or stdin
+  patch         Update field(s) of a resource using strategic merge patch
+  replace       Replace a resource by filename or stdin
+  wait          Experimental: Wait for a specific condition on one or many resources.
+  convert       Convert config files between different API versions
+  kustomize     Build a kustomization target from a directory or a remote url.
+
+Settings Commands:
+  label         Update the labels on a resource
+  annotate      Update the annotations on a resource
+  completion    Output shell completion code for the specified shell (bash or zsh)
+
+Other Commands:
+  alpha         Commands for features in alpha
+  api-resources Print the supported API resources on the server
+  api-versions  Print the supported API versions on the server, in the form of "group/version"
+  config        Modify kubeconfig files
+  plugin        Provides utilities for interacting with plugins.
+  version       Print the client and server version information
+
+Usage:
+  kubectl [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+[centos@ip-172-31-2-36 rajeshkumar]$
+
+ 24  kubectl get pods
+   25  clear
+   26  kubectl
+   27  clear
+   28  kubectl
+   29  kubectl api-resources
+   30  clear
+   31  kubectl api-resources | wc -l
+   32  kubectl api-resources
+   33  clear
+   34  kubectl
+   35  clear
+   36  kubectl api-versions
+   37  kubectl api-resources
+
+========================================================================
+========================================================================
+
+Magic Pattern to use to work with All Resources.
+=============================================
+
+What can you do with API or How to use API?
+============================================
+CRUD
+	Create 
+		CMD
+			create
+		YAML
+			create -f
+	Read
+		CMD
+			get
+	Edit/Update
+		CMD
+			edit
+		YAML
+			apply
+	Delete
+		CMD
+			delete
+		YAML
+			delete -f
+=====================================
+ 38  history
+   39  kubectl version
+   40  clear
+   41  kubectl version
+   42  kubectl api-resources
+   43  clear
+   44  kubectl api-resources
+   45  clear
+   46  kubectl
+   47  clear
+   48  kubectl get ns
+   49  kubectl get pods
+   50  kubectl get pods -n=kube-system
+   51  kubectl create ns dev
+   52  kubectl create ns qa
+   53  kubectl get ns
+   54  clear
+   55  kubectl edit ns dev
+   56  kubectl delete ns dev
+   57  kubectl get ns
+   58  history
+
+
+POD
+========================================================
+========================================================
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-pod
+  labels: 
+    app: webserver
+spec:
+  containers:
+  - name: hello-ctr
+    image: nginx
+    ports:
+    - containerPort: 80
+
+
+ 59  clear
+   60  kubectl get ns
+   61  kubectl create ns rajesh
+   62  kubectl get ns
+   63  clear
+   64  ls
+   65  history
+   66  clear
+   67  kubectl
+   68  clear
+   69  kubectl create -h
+   70  clear
+   71  ls
+   72  cd ..
+   73  ls
+   74  cd rajeshkumar
+   75  ls
+   76  clear
+   77  ls
+   78  vi pod.yaml
+   79  kubectl create -f pod.yaml -n=rajesh
+   80  kubectl get pods -n=rajesh
+   81  kubectl create -f pod.yaml -n=rajesh
+   82  kubectl create -f pod.yaml -n=qa
+   83  kubectl get pods
+   84  kubectl get pods --all-namespaces
+   85  clear
+   86  ls
+   87  kubectl get pods -n-rajesh
+   88  kubectl get pods -n=rajesh
+   89  kubectl edit pod hello-pod -n=rajesh
+   90  kubectl get pods -n=rajesh
+   91  kubectl get pods -n=rajesh --show-labels
+   92  ls
+   93  vi pod.yaml
+   94  kubectl apply -f pod.yaml -n=rajesh
+   95  kubectl get pods -n=rajesh --show-labels
+   96  clear
+   97  kubectl delete pod hello-pod -n=rajesh
+   98  kubectl delete -f pod.yaml -n=qas
+   99  kubectl delete -f pod.yaml -n=qa
+  100  history
+
+
+	
+Master + Workstation =  15.206.164.99
+Worker - 15.206.123.30
+
+=============================================
+Workstation =  15.206.164.99
+centos
+centos123
+===============================================
+Working with Pods?
+=================================
+  describe      Show details of a specific resource or group of resources
+  logs          Print the logs for a container in a pod
+  attach        Attach to a running container
+  exec          Execute a command in a container
+  port-forward  Forward one or more local ports to a pod
+  proxy         Run a proxy to the Kubernetes API server
+  cp            Copy files and directories to and from containers.
+  auth          Inspect authorization
+
+  108  kubectl
+  109  clear
+  110  kubectl get pods -n=rajesh
+  111  kubectl describe pod hello-pod -n=rajesh
+  112  clear
+  113  kubectl get pods -n=rajesh
+  114  kubectl logs hello-pod
+  115  kubectl logs hello-pod -n=rajesh
+  116  watch kubectl logs hello-pod -n=rajesh
+  117  history
+
+   65  kubectl get pods
+   66  kubectl get pods -n=rajesh -o wide
+   67  curl http://10.44.0.1
+   68  clear
+
+ 117  history
+  118  clear
+  119  ls
+  120  kubectl
+  121* clear l
+  122  kubectl logs
+  123  kubectl logs -h
+  124  cleart
+  125  clear
+  126  kubectl get pods -n=rajesh
+  127  kubectl attach hello-pod -n=rajesh
+  128  clear
+  129  ls
+  130  clear
+  131  kubectl get pods -n=rajesh
+  132  kubectl exec hello-pod ls
+  133  kubectl exec hello-pod ls -n=rajesh
+  134  clear
+  135  kubectl exec -it hello-pod /bin/bash
+  136  kubectl exec -it hello-pod /bin/bash -n=rajesh
+  137  history
+
+  # Listen on ports 5000 and 6000 locally, forwarding data to/from ports 5000
+and 6000 in the pod
+  kubectl port-forward pod/hello-pod 8888:80
+ kubectl port-forward pod/hello-pod 8888:80 -n=rajesh
+
+   73  kubectl cp pod.yaml hello-pod:/opt -n=rajesh
+   74  kubectl cp -h
+   75  clear
+   76  kubectl exec hello-pod -n=rajesh ls /opt
+
+ 79  kubectl auth
+   80  kubectl auth can-i
+   81  kubectl auth can-i pod
+   82  kubectl auth can-i create pod
+   83  kubectl reconcile
+   84  kubectl auth reconcile
+   85  kubectl auth reconcile -h
+   86  kubectl auth reconcile -f fdff
+   87  ls
+   88  kubectl auth reconcile -f pod.yaml
+   89  kubectl auth can-i
+   90  kubectl auth can-i create pod
+   91  kubectl auth can-i create poddd
+============================================================
+============================================================
+ReplicationController
+
+Replication - 1 POD to Multiple
+Controller - Desired PODs === Actual Pods
+
+ 170  clear
+  171  kubectl explain ns
+  172  kubectl explain ns.spec
+  173  kubectl explain pods
+  174  kubectl explain pods.spec
+  175  kubectl explain pods.spec.containers
+  176  kubectl explain rc
+  177  kubectl explain rc.spec
+  178  kubectl explain rc.spec.template
+  179  history
+
+
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: hello-rc
+spec:
+  replicas: 2   
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-ctr
+        image: nginx
+        ports:
+        - containerPort: 80
+
+ 184  vi rc.yaml
+  185  kubectl get rc -n=rajesh
+  186* kubectl create -f rc.yaml -n=rajes
+  187  kubectl get rc -n=rajesh
+  188  kubectl gets pods
+  189  kubectl get pods
+  190  clear
+  191  kubectl get pods
+  192  kubectl get pods -n=rajesh
+  193  kubectl edit rc hello-rc -n=rajesh
+  194  kubectl get pods -n=rajesh
+  195  clear
+  196  kubectl get pods -n=rajesh
+  197  kubectl edit rc hello-rc -n=rajesh
+  198  clear
+  199  kubectl get pods -n=rajesh
+  200  vi rc.yaml
+  201  kubectl apply -f rc.yaml -n-rajesh
+  202  kubectl apply -f rc.yaml -n=rajesh
+  203  kubectl get pods -n=rajesh
+  204  clear
+  205  kubectl get pods -n=rajesh
+  206  kubectl
+  207  clear
+  208  kubectl scale -h
+  209  clerar
+  210  clear
+  211  kubectl scale --replicas=5 rc/hello-rc -n=rajesh
+  212  kubectl get pods -n=rajesh
+  213  kubectl get rc -n=rajesh
+  214  clear
+  215  kubectl get pods -n=rajesh
+  216  kubectl describe pod hello-rc-2ccg4 -n=rajesh
+  217  kubectl get pods -n=rajesh
+  218  kubectl describe pod hello-pod -n=rajesh
+  219  clear
+  220  ls
+  221  kubectl get pods -n=rajesh
+  222  kubectl delete pod hello-rc-2ccg4 hello-rc-7m79j hello-rc-lmpvw hello-rc-                       nwhh7 -n=rajesh
+  223  kubectl get pods -n=rajesh
+
+========================================================================
+Deployment
+=================================================
+Replication
+Controller
+Versioning
+Rollout
+RollBack
+
+Image
+===========================
+scmgalaxy/nginx-devopsschoolv1
+scmgalaxy/nginx-devopsschoolv2
+
+kubectl create deployment my-dep --image=scmgalaxy/nginx-devopsschoolv1 -n=rajesh
+
+ 229  kubectl create -h
+  230  clear
+  231  kubectl create deployment -h
+  232  clear
+  233  kubectl get deploy -n=rajesh
+  234  kubectl create deployment my-dep --image=scmgalaxy/nginx-devopsschoolv1
+  235  kubectl get deploy -n=rajesh
+  236  kubectl create deployment my-dep --image=scmgalaxy/nginx-devopsschoolv1
+  237  kubectl create deployment my-dep --image=scmgalaxy/nginx-devopsschoolv1 -n=rajesh
+  238  kubectl get deploy -n=rajesh
+  239  clear
+  240  kubectl get deploy -n=rajesh
+  241  kubectl edit deploy my-dep -n=rajesh
+  242  kubectl get deploy -n=rajesh
+  243  clear
+  244  ls
+  245  cd rajeshkumar/
+  246  ls
+  247  kubectl get deploy -n=rajesh
+  248  kubectl get deploy my-dep -n=rajesh
+  249  kubectl get deploy my-dep -n=rajesh -o yaml
+  250  clear
+  251  kubectl get deploy my-dep -n=rajesh -o yaml >> dep.yaml
+  252  ls
+  253  vi dep.yaml
+  254  vi dep.yaml
+  255  kubectl get deploy -n=rajesh -o yaml
+  256  kubectl get deploy -n=rajesh
+  257  clear
+  258  kubectl get deploy -n=rajesh
+  259  kubectl apply -f dep.yaml -n=rajesh
+  260  kubectl get deploy -n=rajesh
+  261  kubectl get rc -n=rajesh
+  262  kubectl  delete rc hello-rc -n=rajesh
+  263  clear
+  264  ls
+  265  kubectl get deploy -n=rajesh
+  266  kubectl scale -h
+  267  clear
+  268  kubectl scale --replicas=3 deployment
+  269  kubectl get deploy -n=rajesh
+  270  kubectl scale --replicas=3 deployment my-dep -n=rajesh
+  271  kubectl get deploy -n=rajesh
+  272  kubectl get pods -n=rajesh
+  273  kubectl delete pod my-dep-747b4ffb56-4mz57 my-dep-747b4ffb56-9vs2m my-dep-747b4ffb56-wf524 -n=rajesh
+  274  kubectl get pods -n=rajesh
+  275  clear
+
+
+ 277  clear
+  278  kubectl get pods -n=rajesh
+  279  kubectl get deploy -n=rajesh
+  280  kubectl delete deploy my-dep1 -n=rajesh
+  281  kubectl get pods -n=rajesh
+  282  kubectl get pods -n=rajesh -o wide
+  283  curl http://10.44.0.810.44.0.8
+  284  clear
+  285  curl http://10.44.0.8
+  286  kubectl delete deploy my-dep1 -n=rajesh
+  287  kubectl get deploy -n=rajesh
+  288  kubectl
+  289  clear
+  290  kubectl rollout -h
+  291  kubectl rollout history deploy my-dep -n=rajesh
+  292  clear
+  293  kubectl rollout history deploy my-dep -n=rajesh
+  294  kubectl edit deploy my-dep -n=rajesh
+  295  kubectl rollout history deploy my-dep -n=rajesh
+  296  kubectl get pods -n=rajesh -o wide
+  297  curl http://10.44.0.7
+  298  clerar
+
+
+================================
+Rollout	- Rolling out new Image Version
+RollBack - Rolling back new Image Version
+----------------------------------------
+		Without Single SECOND of Downtime
+
+
+kubectl create deployment my-dep --image=scmgalaxy/nginx-devopsschoolv1 -n=rajesh
+kubectl scale --replicas=10 deployment my-dep -n=rajesh
+kubectl get pod -o wide -n=rajesh
+curl http://10.44.0.7
+kubectl rollout history deploy my-dep -n=rajesh
+kubectl rollout status deploy my-dep -n=rajesh
+kubectl edit deploy my-dep -n=rajesh	# scmgalaxy/nginx-devopsschoolv2
+kubectl rollout status deploy my-dep -n=rajesh
+kubectl rollout history deploy my-dep -n=rajesh
+kubectl get pod -o wide -n=rajesh
+curl http://10.44.0.7
+kubectl rollout undo deploy my-dep --to-revision=1 -n=rajesh
+kubectl rollout status deploy my-dep -n=rajesh
+
